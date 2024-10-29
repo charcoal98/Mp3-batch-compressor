@@ -1,0 +1,26 @@
+#!/bin/bash
+folder=${PWD##*/}
+folder="${folder##*/}"
+folder=${folder:-/} 
+folder=${folder// /_}
+clear
+echo -e "\e[91mRun this script in the folder of the songs you want to compress]"
+echo -e "\e[93mThis script will not work without lame installed"
+echo -e "\e[93mSee lame documentation for supported formats"
+echo -e "\e[39m"
+echo "Enter Desired Sample Rate"
+read sampleRate
+folder="$folder-$sampleRate"
+echo
+echo $folder
+mkdir ~/Music/Compressed
+mkdir ~/Music/Compressed/$folder
+
+for file in *; do
+    if [ -f "$file" ]; then
+        lame -b $sampleRate "$file" "$sampleRate-$file"
+        mv "$sampleRate-$file" ~/Music/Compressed/"$folder"
+    fi
+done
+echo
+echo $folder
